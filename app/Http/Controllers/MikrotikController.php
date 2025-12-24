@@ -1,64 +1,57 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
+use App\Services\MikrotikService;
+use Illuminate\Http\JsonResponse;
+
 
 class MikrotikController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+protected MikrotikService $mikrotik;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+public function __construct(MikrotikService $mikrotik)
+{
+$this->mikrotik = $mikrotik;
+}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+public function interfaces(): JsonResponse
+{
+return response()->json([
+'status' => 'ok',
+'data' => $this->mikrotik->interfaces(),
+]);
+}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+public function ipAddresses(): JsonResponse
+{
+return response()->json([
+'status' => 'ok',
+'data' => $this->mikrotik->ipAddresses(),
+]);
+}
+
+
+public function neighbours(): JsonResponse
+{
+return response()->json([
+'status' => 'ok',
+'data' => $this->mikrotik->neighbours(),
+]);
+}
+
+
+public function traffic(string $interface): JsonResponse
+{
+return response()->json([
+'status' => 'ok',
+'interface' => $interface,
+'data' => $this->mikrotik->trafficMonitor($interface),
+]);
+}
 }
